@@ -8,6 +8,33 @@
   margin-top: 6px;
 }
 
+/* 프로젝트 내 네비게이션 */
+.project-nav {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #eee;
+}
+
+.project-nav a {
+  font-size: 0.9rem;
+  color: #888;
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.project-nav a:hover {
+  color: #222;
+}
+
+.project-nav a.active {
+  color: #222;
+  font-weight: 500;
+  border-bottom-color: #222;
+}
+
 section {
   margin-bottom: 40px;
 }
