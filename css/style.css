@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #fff;
+  color: #222;
+  line-height: 1.6;
+  padding: 60px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* 헤더 */
+header {
+  margin-bottom: 50px;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.back {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: #888;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.back:hover {
+  color: #222;
+}
+
+/* 네비게이션 */
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+nav a {
+  display: block;
+  font-size: 1rem;
+  color: #222;
+  text-decoration: none;
+  padding: 20px 24px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+nav a:hover {
+  border-color: #222;
+}
+
+/* 프로젝트 리스트 */
+.project-list {
+  list-style: none;
+}
+
+.project-list li {
+  border-bottom: 1px solid #eee;
+}
+
+.project-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  text-decoration: none;
+  color: #222;
+}
+
+.project-list a:hover {
+  color: #666;
+}
+
+.project-list .title {
+  font-size: 1rem;
+}
+
+.project-list .date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* 빈 상태 */
+.empty {
+  color: #888;
+  font-size: 0.95rem;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  body {
+    padding: 30px;
+  }
+}
