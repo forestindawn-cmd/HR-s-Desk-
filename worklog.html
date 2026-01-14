@@ -22,12 +22,14 @@
         .section { margin-bottom: 40px; }
         .section-title { font-size: 20px; font-weight: 600; color: #2f1b14; display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
         .timeline-table { width: 100%; border-collapse: collapse; border: 1px solid #e9e9e7; border-radius: 6px; overflow: hidden; }
-        .timeline-table th { background: #f7f6f3; padding: 12px 16px; text-align: left; font-weight: 600; font-size: 14px; color: #2f1b14; border-bottom: 1px solid #e9e9e7; }
-        .timeline-table td { padding: 12px 16px; border-bottom: 1px solid #f1f1ef; vertical-align: top; }
+        .timeline-table th { background: #f7f6f3; padding: 12px 16px; text-align: left; font-weight: 600; font-size: 14px; color: #2f1b14; border-bottom: 1px solid #e9e9e7; border-right: 1px solid #e9e9e7; }
+        .timeline-table th:last-child { border-right: none; }
+        .timeline-table td { padding: 12px 16px; border-bottom: 1px solid #e9e9e7; border-right: 1px solid #e9e9e7; vertical-align: top; }
+        .timeline-table td:last-child { border-right: none; }
         .timeline-table tbody tr:hover { background: #fafafa; }
         .time-cell { font-weight: 600; color: #2383e2; font-size: 14px; width: 80px; text-align: center; background: #f9f9f8; }
         .content-cell { width: 100%; }
-        .content-textarea { width: 100%; min-height: 50px; border: none; background: transparent; font-size: 14px; font-family: inherit; color: #37352f; resize: none; outline: none; line-height: 1.5; }
+        .content-textarea { width: 100%; min-height: 35px; border: none; background: transparent; font-size: 13px; font-family: inherit; color: #37352f; resize: none; outline: none; line-height: 1.4; }
         .content-textarea:focus { background: #fafafa; border-radius: 4px; padding: 8px; }
         .content-textarea::placeholder { color: #a8a8a6; }
         .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
@@ -115,20 +117,20 @@
             <div class="section">
                 <div class="section-title"><span>⏰</span>시간별 상세 업무</div>
                 <table class="timeline-table">
-                    <thead><tr><th style="width: 80px;">시간</th><th>업무 내용</th></tr></thead>
+                    <thead><tr><th style="width: 70px;">시간</th><th style="width: 28%;">🛒 공동구매</th><th style="width: 28%;">🎬 유튜브</th><th style="width: 28%;">📦 구매대행</th><th style="width: 11%;">📝 기타</th></tr></thead>
                     <tbody>
-                        <tr><td class="time-cell">08:00</td><td class="content-cell"><textarea class="content-textarea" data-time="08"></textarea></td></tr>
-                        <tr><td class="time-cell">09:00</td><td class="content-cell"><textarea class="content-textarea" data-time="09"></textarea></td></tr>
-                        <tr><td class="time-cell">10:00</td><td class="content-cell"><textarea class="content-textarea" data-time="10"></textarea></td></tr>
-                        <tr><td class="time-cell">11:00</td><td class="content-cell"><textarea class="content-textarea" data-time="11"></textarea></td></tr>
-                        <tr><td class="time-cell">12:00</td><td class="content-cell"><textarea class="content-textarea" data-time="12"></textarea></td></tr>
-                        <tr><td class="time-cell">13:00</td><td class="content-cell"><textarea class="content-textarea" data-time="13"></textarea></td></tr>
-                        <tr><td class="time-cell">14:00</td><td class="content-cell"><textarea class="content-textarea" data-time="14"></textarea></td></tr>
-                        <tr><td class="time-cell">15:00</td><td class="content-cell"><textarea class="content-textarea" data-time="15"></textarea></td></tr>
-                        <tr><td class="time-cell">16:00</td><td class="content-cell"><textarea class="content-textarea" data-time="16"></textarea></td></tr>
-                        <tr><td class="time-cell">17:00</td><td class="content-cell"><textarea class="content-textarea" data-time="17"></textarea></td></tr>
-                        <tr><td class="time-cell">18:00</td><td class="content-cell"><textarea class="content-textarea" data-time="18"></textarea></td></tr>
-                        <tr><td class="time-cell" style="background: #fff3e0; color: #bf6000;">🌙 야근</td><td class="content-cell"><textarea class="content-textarea" data-time="overtime"></textarea></td></tr>
+                        <tr><td class="time-cell">08:00</td><td class="content-cell"><textarea class="content-textarea" data-time="08" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="08" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="08" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="08" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell">09:00</td><td class="content-cell"><textarea class="content-textarea" data-time="09" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="09" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="09" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="09" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell">10:00</td><td class="content-cell"><textarea class="content-textarea" data-time="10" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="10" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="10" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="10" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell">11:00</td><td class="content-cell"><textarea class="content-textarea" data-time="11" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="11" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="11" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="11" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell">12:00</td><td class="content-cell"><textarea class="content-textarea" data-time="12" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="12" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="12" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="12" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell">13:00</td><td class="content-cell"><textarea class="content-textarea" data-time="13" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="13" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="13" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="13" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell">14:00</td><td class="content-cell"><textarea class="content-textarea" data-time="14" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="14" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="14" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="14" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell">15:00</td><td class="content-cell"><textarea class="content-textarea" data-time="15" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="15" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="15" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="15" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell">16:00</td><td class="content-cell"><textarea class="content-textarea" data-time="16" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="16" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="16" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="16" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell">17:00</td><td class="content-cell"><textarea class="content-textarea" data-time="17" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="17" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="17" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="17" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell">18:00</td><td class="content-cell"><textarea class="content-textarea" data-time="18" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="18" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="18" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="18" data-cat="etc"></textarea></td></tr>
+                        <tr><td class="time-cell" style="background: #fff3e0; color: #bf6000;">🌙 야근</td><td class="content-cell"><textarea class="content-textarea" data-time="overtime" data-cat="groupbuy"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="overtime" data-cat="youtube"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="overtime" data-cat="purchasing"></textarea></td><td class="content-cell"><textarea class="content-textarea" data-time="overtime" data-cat="etc"></textarea></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -219,7 +221,7 @@
                 timeSlots: {},
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
-            document.querySelectorAll('.content-textarea[data-time]').forEach(t => { data.timeSlots[t.dataset.time] = t.value; });
+            document.querySelectorAll('.content-textarea[data-time]').forEach(t => { data.timeSlots[`${t.dataset.time}_${t.dataset.cat}`] = t.value; });
             try {
                 await db.collection('worklogs').doc(date).set(data, { merge: true });
                 showSaveStatus('✓ 저장 완료');
@@ -240,7 +242,7 @@
                     else { document.getElementById('startWorkHour').value = ''; document.getElementById('startWorkMin').value = ''; }
                     if (d.endWork) { const [h,m] = d.endWork.split(':'); document.getElementById('endWorkHour').value = h; document.getElementById('endWorkMin').value = m; }
                     else { document.getElementById('endWorkHour').value = ''; document.getElementById('endWorkMin').value = ''; }
-                    document.querySelectorAll('.content-textarea[data-time]').forEach(t => { t.value = d.timeSlots?.[t.dataset.time] || ''; });
+                    document.querySelectorAll('.content-textarea[data-time]').forEach(t => { t.value = d.timeSlots?.[`${t.dataset.time}_${t.dataset.cat}`] || ''; });
                 } else { clearFormFields(); }
             } catch (e) { console.error(e); }
             updateTodayProjectsList();
@@ -344,11 +346,12 @@
             const sm = document.getElementById('startWorkMin').value;
             const eh = document.getElementById('endWorkHour').value;
             const em = document.getElementById('endWorkMin').value;
-            let csv = '날짜,구분,내용\n';
-            if (sh && sm) csv += `"${date}","출근","${sh}:${sm}"\n`;
-            if (eh && em) csv += `"${date}","퇴근","${eh}:${em}"\n`;
+            let csv = '날짜,시간,카테고리,내용\n';
+            if (sh && sm) csv += `"${date}","출근","","${sh}:${sm}"\n`;
+            if (eh && em) csv += `"${date}","퇴근","","${eh}:${em}"\n`;
+            const catNames = {groupbuy:'공동구매',youtube:'유튜브',purchasing:'구매대행',etc:'기타'};
             document.querySelectorAll('.content-textarea[data-time]').forEach(t => {
-                if (t.value.trim()) csv += `"${date}","${t.dataset.time==='overtime'?'야근':t.dataset.time+':00'}","${t.value.replace(/"/g,'""')}"\n`;
+                if (t.value.trim()) csv += `"${date}","${t.dataset.time==='overtime'?'야근':t.dataset.time+':00'}","${catNames[t.dataset.cat]}","${t.value.replace(/"/g,'""')}"\n`;
             });
             const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
             const link = document.createElement('a');
