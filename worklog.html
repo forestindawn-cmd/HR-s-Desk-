@@ -184,22 +184,52 @@
         const db = firebase.firestore();
         let projects = [];
         let saveTimeout = null;
+        let isAuthenticated = false;
+
+        // 비밀번호 확인
+        async function checkPassword() {
+            if (isAuthenticated) return true;
+            
+            const input = prompt('비밀번호를 입력하세요:');
+            if (!input) return false;
+            
+            try {
+                const doc = await db.collection('settings').doc('auth').get();
+                if (doc.exists) {
+                    if (doc.data().password === input) {
+                        isAuthenticated = true;
+                        return true;
+                    } else {
+                        alert('비밀번호가 틀렸습니다.');
+                        return false;
+                    }
+                } else {
+                    // 비밀번호 없으면 설정
+                    const confirm = prompt('비밀번호가 설정되지 않았습니다. 새 비밀번호를 설정하세요:');
+                    if (confirm && confirm === input) {
+                        await db.collection('settings').doc('auth').set({ password: input });
+                        isAuthenticated = true;
+                        alert('비밀번호가 설정되었습니다!');
+                        return true;
+                    } else if (confirm) {
+                        alert('비밀번호가 일치하지 않습니다.');
+                        return false;
+                    }
+                    return false;
+                }
+            } catch (e) {
+                console.error(e);
+                alert('오류가 발생했습니다.');
+                return false;
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('workDate').value = new Date().toISOString().split('T')[0];
             loadData();
             loadProjects();
             document.getElementById('workDate').addEventListener('change', loadData);
-            document.querySelectorAll('textarea, select').forEach(el => {
-                el.addEventListener('input', autoSave);
-                el.addEventListener('change', autoSave);
-            });
         });
-
-        function autoSave() {
-            if (saveTimeout) clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(() => saveData(true), 2000);
-        }
 
         function showSaveStatus(msg = '✓ 저장 완료') {
             const s = document.getElementById('saveStatus');
@@ -209,6 +239,7 @@
         }
 
         async function saveData(silent = false) {
+            if (!await checkPassword()) return;
             const date = document.getElementById('workDate').value;
             const startHour = document.getElementById('startWorkHour').value;
             const startMin = document.getElementById('startWorkMin').value;
@@ -271,6 +302,7 @@
         }
 
         async function addProject() {
+            if (!await checkPassword()) return;
             const name = document.getElementById('projectName').value;
             const start = document.getElementById('projectStart').value;
             const end = document.getElementById('projectEnd').value;
@@ -290,6 +322,7 @@
         }
 
         async function deleteProject(id) {
+            if (!await checkPassword()) return;
             if (!confirm('정말 삭제하시겠습니까?')) return;
             projects = projects.filter(p => p.id !== id);
             await saveProjects();
@@ -321,6 +354,7 @@
         }
 
         async function saveTodayProgress() {
+            if (!await checkPassword()) return;
             const today = document.getElementById('workDate').value;
             projects.forEach(p => {
                 const pi = document.getElementById(`progress_${p.id}`);
@@ -361,7 +395,7 @@
             alert('엑셀 다운로드 완료! 📊');
         }
 
-        function clearForm() { if (confirm('정말 초기화하시겠습니까?')) clearFormFields(); }
+        async function clearForm() { if (!await checkPassword()) return; if (confirm('정말 초기화하시겠습니까?')) clearFormFields(); }
     </script>
 </body>
 </html>
