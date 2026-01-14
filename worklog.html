@@ -106,16 +106,6 @@
         </div>
 
         <div class="content">
-            <div class="section">
-                <div class="section-title"><span>📝</span>주요 업무 및 부업무</div>
-                <table class="timeline-table" style="margin-bottom: 30px;">
-                    <thead><tr><th style="width: 120px;">구분</th><th>업무 내용</th></tr></thead>
-                    <tbody>
-                        <tr><td class="time-cell" style="background: #e8f5e8; color: #2d5a2d;">📌 주업무</td><td class="content-cell"><textarea class="content-textarea" id="mainTask" placeholder="오늘의 주요 업무..."></textarea></td></tr>
-                        <tr><td class="time-cell" style="background: #fff3e0; color: #bf6000;">📝 부업무</td><td class="content-cell"><textarea class="content-textarea" id="subTask" placeholder="부수적인 업무..."></textarea></td></tr>
-                    </tbody>
-                </table>
-            </div>
 
             <div class="section">
                 <div class="section-title"><span>📈</span>프로젝트 진행상황</div>
@@ -226,8 +216,6 @@
                 date, 
                 startWork: startHour && startMin ? `${startHour}:${startMin}` : '',
                 endWork: endHour && endMin ? `${endHour}:${endMin}` : '',
-                mainTask: document.getElementById('mainTask').value,
-                subTask: document.getElementById('subTask').value,
                 timeSlots: {},
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
@@ -252,8 +240,6 @@
                     else { document.getElementById('startWorkHour').value = ''; document.getElementById('startWorkMin').value = ''; }
                     if (d.endWork) { const [h,m] = d.endWork.split(':'); document.getElementById('endWorkHour').value = h; document.getElementById('endWorkMin').value = m; }
                     else { document.getElementById('endWorkHour').value = ''; document.getElementById('endWorkMin').value = ''; }
-                    document.getElementById('mainTask').value = d.mainTask || '';
-                    document.getElementById('subTask').value = d.subTask || '';
                     document.querySelectorAll('.content-textarea[data-time]').forEach(t => { t.value = d.timeSlots?.[t.dataset.time] || ''; });
                 } else { clearFormFields(); }
             } catch (e) { console.error(e); }
@@ -265,8 +251,6 @@
             document.getElementById('startWorkMin').value = '';
             document.getElementById('endWorkHour').value = '';
             document.getElementById('endWorkMin').value = '';
-            document.getElementById('mainTask').value = '';
-            document.getElementById('subTask').value = '';
             document.querySelectorAll('.content-textarea[data-time]').forEach(t => { t.value = ''; });
         }
 
@@ -363,8 +347,6 @@
             let csv = '날짜,구분,내용\n';
             if (sh && sm) csv += `"${date}","출근","${sh}:${sm}"\n`;
             if (eh && em) csv += `"${date}","퇴근","${eh}:${em}"\n`;
-            csv += `"${date}","주업무","${document.getElementById('mainTask').value.replace(/"/g,'""')}"\n`;
-            csv += `"${date}","부업무","${document.getElementById('subTask').value.replace(/"/g,'""')}"\n`;
             document.querySelectorAll('.content-textarea[data-time]').forEach(t => {
                 if (t.value.trim()) csv += `"${date}","${t.dataset.time==='overtime'?'야근':t.dataset.time+':00'}","${t.value.replace(/"/g,'""')}"\n`;
             });
