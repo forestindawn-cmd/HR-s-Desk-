@@ -1,46 +1,382 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>업무일지 | 박효림의 기획실</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    .notion-embed {
-      width: 100%;
-      height: calc(100vh - 200px);
-      min-height: 600px;
-      border: 1px solid #eee;
-      border-radius: 8px;
-    }
-    
-    .placeholder {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: calc(100vh - 200px);
-      min-height: 600px;
-      background: #fafafa;
-      border: 1px dashed #ddd;
-      border-radius: 8px;
-      color: #888;
-      font-size: 0.95rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>업무일지 | 박효림의 기획실</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #fafafa; color: #37352f; line-height: 1.5; padding: 40px; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .header { padding: 40px 60px 30px; border-bottom: 1px solid #e9e9e7; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 32px; font-weight: 700; color: #2f1b14; }
+        .back-link { font-size: 14px; color: #888; text-decoration: none; margin-bottom: 10px; display: inline-block; }
+        .back-link:hover { color: #222; }
+        .date-picker { display: flex; align-items: center; gap: 12px; background: #f7f6f3; padding: 8px 16px; border-radius: 6px; border: 1px solid #e9e9e7; }
+        .date-picker input { border: none; background: transparent; font-size: 14px; font-weight: 500; color: #37352f; outline: none; }
+        .content { padding: 40px 60px; }
+        .section { margin-bottom: 40px; }
+        .section-title { font-size: 20px; font-weight: 600; color: #2f1b14; display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+        .timeline-table { width: 100%; border-collapse: collapse; border: 1px solid #e9e9e7; border-radius: 6px; overflow: hidden; }
+        .timeline-table th { background: #f7f6f3; padding: 12px 16px; text-align: left; font-weight: 600; font-size: 14px; color: #2f1b14; border-bottom: 1px solid #e9e9e7; }
+        .timeline-table td { padding: 12px 16px; border-bottom: 1px solid #f1f1ef; vertical-align: top; }
+        .timeline-table tbody tr:hover { background: #fafafa; }
+        .time-cell { font-weight: 600; color: #2383e2; font-size: 14px; width: 80px; text-align: center; background: #f9f9f8; }
+        .content-cell { width: 100%; }
+        .content-textarea { width: 100%; min-height: 50px; border: none; background: transparent; font-size: 14px; font-family: inherit; color: #37352f; resize: none; outline: none; line-height: 1.5; }
+        .content-textarea:focus { background: #fafafa; border-radius: 4px; padding: 8px; }
+        .content-textarea::placeholder { color: #a8a8a6; }
+        .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .project-form-section { background: #fbfbfa; padding: 24px; border-radius: 8px; border: 1px solid #e9e9e7; }
+        .project-form-section h3 { font-size: 16px; font-weight: 600; color: #2f1b14; margin-bottom: 16px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 500; color: #73726e; margin-bottom: 6px; }
+        .form-group input, .form-group select { width: 100%; padding: 8px 12px; border: 1px solid #e9e9e7; border-radius: 4px; font-size: 14px; color: #37352f; background: white; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #2383e2; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .add-project-btn { width: 100%; padding: 12px; background: #2383e2; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .add-project-btn:hover { background: #1976d2; }
+        .projects-status { padding: 24px; background: white; border-radius: 8px; border: 1px solid #e9e9e7; }
+        .project-item { padding: 16px; background: #fbfbfa; border: 1px solid #f1f1ef; border-radius: 6px; margin-bottom: 12px; }
+        .project-name { font-size: 14px; font-weight: 600; color: #2f1b14; margin-bottom: 8px; }
+        .project-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .progress-bar { flex: 1; height: 8px; background: #f1f1ef; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #2383e2; transition: width 0.3s; }
+        .progress-text { font-size: 12px; color: #73726e; font-weight: 500; min-width: 40px; }
+        .project-dates { display: flex; justify-content: space-between; font-size: 11px; color: #a8a8a6; margin-bottom: 8px; }
+        .project-status { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+        .status-planning { background: #fff3e0; color: #bf6000; }
+        .status-progress { background: #e3f2fd; color: #1565c0; }
+        .status-complete { background: #e8f5e8; color: #2e7d32; }
+        .status-hold { background: #fce4ec; color: #c2185b; }
+        .no-projects { text-align: center; color: #a8a8a6; font-size: 13px; padding: 40px 20px; background: #fbfbfa; border: 1px dashed #e9e9e7; border-radius: 6px; }
+        .actions { display: flex; justify-content: center; gap: 12px; margin-top: 40px; padding-top: 30px; border-top: 1px solid #f1f1ef; }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .btn-primary { background: #2383e2; color: white; }
+        .btn-primary:hover { background: #1976d2; }
+        .btn-secondary { background: #f7f6f3; color: #37352f; border: 1px solid #e9e9e7; }
+        .btn-secondary:hover { background: #f1f1ef; }
+        .save-status { position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background: #2e7d32; color: white; border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity 0.3s; }
+        .save-status.show { opacity: 1; }
+        @media (max-width: 768px) { body { padding: 20px; } .header, .content { padding: 20px; } .projects-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-  <div class="container" style="max-width: 1200px;">
-    <header>
-      <a href="index.html" class="back">← 기획실</a>
-      <h1>업무일지</h1>
-    </header>
-    
-    <!-- 노션 URL 받으면 아래 주석 해제하고 placeholder 삭제 -->
-    <!-- <iframe class="notion-embed" src="노션_공유_URL_여기에" frameborder="0"></iframe> -->
-    
-    <div class="placeholder">
-      노션 URL 연결 대기 중...
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-link">← 기획실</a>
+            <div class="header-content">
+                <h1>📋 업무일지</h1>
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                    <span style="font-size: 14px; color: #37352f; font-weight: 500;">작성자: 박효림</span>
+                    <div class="date-picker">
+                        <span>📅</span>
+                        <input type="date" id="workDate">
+                    </div>
+                    <div style="display: flex; gap: 15px; font-size: 13px;">
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span>🏢 출근:</span>
+                            <select id="startWorkHour" style="padding: 4px; border: 1px solid #ddd; border-radius: 3px; font-size: 12px;">
+                                <option value="">시</option>
+                                <option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option>
+                            </select>
+                            <select id="startWorkMin" style="padding: 4px; border: 1px solid #ddd; border-radius: 3px; font-size: 12px;">
+                                <option value="">분</option>
+                                <option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span>🏠 퇴근:</span>
+                            <select id="endWorkHour" style="padding: 4px; border: 1px solid #ddd; border-radius: 3px; font-size: 12px;">
+                                <option value="">시</option>
+                                <option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option>
+                            </select>
+                            <select id="endWorkMin" style="padding: 4px; border: 1px solid #ddd; border-radius: 3px; font-size: 12px;">
+                                <option value="">분</option>
+                                <option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <div class="section-title"><span>📝</span>주요 업무 및 부업무</div>
+                <table class="timeline-table" style="margin-bottom: 30px;">
+                    <thead><tr><th style="width: 120px;">구분</th><th>업무 내용</th></tr></thead>
+                    <tbody>
+                        <tr><td class="time-cell" style="background: #e8f5e8; color: #2d5a2d;">📌 주업무</td><td class="content-cell"><textarea class="content-textarea" id="mainTask" placeholder="오늘의 주요 업무..."></textarea></td></tr>
+                        <tr><td class="time-cell" style="background: #fff3e0; color: #bf6000;">📝 부업무</td><td class="content-cell"><textarea class="content-textarea" id="subTask" placeholder="부수적인 업무..."></textarea></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-title"><span>📈</span>프로젝트 진행상황</div>
+                <div class="projects-status" style="width: 100%;"><div id="projectsList"><div class="no-projects">로딩 중...</div></div></div>
+            </div>
+
+            <div class="section">
+                <div class="section-title"><span>⏰</span>시간별 상세 업무</div>
+                <table class="timeline-table">
+                    <thead><tr><th style="width: 80px;">시간</th><th>업무 내용</th></tr></thead>
+                    <tbody>
+                        <tr><td class="time-cell">08:00</td><td class="content-cell"><textarea class="content-textarea" data-time="08"></textarea></td></tr>
+                        <tr><td class="time-cell">09:00</td><td class="content-cell"><textarea class="content-textarea" data-time="09"></textarea></td></tr>
+                        <tr><td class="time-cell">10:00</td><td class="content-cell"><textarea class="content-textarea" data-time="10"></textarea></td></tr>
+                        <tr><td class="time-cell">11:00</td><td class="content-cell"><textarea class="content-textarea" data-time="11"></textarea></td></tr>
+                        <tr><td class="time-cell">12:00</td><td class="content-cell"><textarea class="content-textarea" data-time="12"></textarea></td></tr>
+                        <tr><td class="time-cell">13:00</td><td class="content-cell"><textarea class="content-textarea" data-time="13"></textarea></td></tr>
+                        <tr><td class="time-cell">14:00</td><td class="content-cell"><textarea class="content-textarea" data-time="14"></textarea></td></tr>
+                        <tr><td class="time-cell">15:00</td><td class="content-cell"><textarea class="content-textarea" data-time="15"></textarea></td></tr>
+                        <tr><td class="time-cell">16:00</td><td class="content-cell"><textarea class="content-textarea" data-time="16"></textarea></td></tr>
+                        <tr><td class="time-cell">17:00</td><td class="content-cell"><textarea class="content-textarea" data-time="17"></textarea></td></tr>
+                        <tr><td class="time-cell">18:00</td><td class="content-cell"><textarea class="content-textarea" data-time="18"></textarea></td></tr>
+                        <tr><td class="time-cell" style="background: #fff3e0; color: #bf6000;">🌙 야근</td><td class="content-cell"><textarea class="content-textarea" data-time="overtime"></textarea></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-title"><span>📊</span>프로젝트 관리</div>
+                <div class="projects-grid">
+                    <div class="project-form-section">
+                        <h3>➕ 새 프로젝트 등록</h3>
+                        <div class="form-group"><label>프로젝트명</label><input type="text" id="projectName"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>시작일</label><input type="date" id="projectStart"></div>
+                            <div class="form-group"><label>종료일</label><input type="date" id="projectEnd"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>초기 진행률 (%)</label><input type="number" id="projectProgress" min="0" max="100" value="0"></div>
+                            <div class="form-group"><label>상태</label><select id="projectStatus"><option value="planning">계획중</option><option value="progress">진행중</option><option value="complete">완료</option><option value="hold">보류</option></select></div>
+                        </div>
+                        <button class="add-project-btn" onclick="addProject()">프로젝트 등록</button>
+                    </div>
+                    <div class="projects-status">
+                        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">📈 오늘의 프로젝트 진행률</h3>
+                        <div id="todayProjectsList"><div class="no-projects">로딩 중...</div></div>
+                        <button class="btn btn-primary" onclick="saveTodayProgress()" style="width: 100%; margin-top: 15px;">📊 오늘 진행률 저장</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="clearForm()">🔄 초기화</button>
+            <button class="btn btn-secondary" onclick="exportToExcel()">📊 엑셀 다운로드</button>
+            <button class="btn btn-primary" onclick="saveData()">💾 저장</button>
+        </div>
     </div>
-  </div>
+
+    <div class="save-status" id="saveStatus">✓ 저장 완료</div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCdxsvm1dT17IZHrhLdWtRM_Hs4yEGWZUo",
+            authDomain: "worklog-hyorim.firebaseapp.com",
+            projectId: "worklog-hyorim",
+            storageBucket: "worklog-hyorim.firebasestorage.app",
+            messagingSenderId: "156962285568",
+            appId: "1:156962285568:web:df2addee3614f2656050e5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        let projects = [];
+        let saveTimeout = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('workDate').value = new Date().toISOString().split('T')[0];
+            loadData();
+            loadProjects();
+            document.getElementById('workDate').addEventListener('change', loadData);
+            document.querySelectorAll('textarea, select').forEach(el => {
+                el.addEventListener('input', autoSave);
+                el.addEventListener('change', autoSave);
+            });
+        });
+
+        function autoSave() {
+            if (saveTimeout) clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => saveData(true), 2000);
+        }
+
+        function showSaveStatus(msg = '✓ 저장 완료') {
+            const s = document.getElementById('saveStatus');
+            s.textContent = msg;
+            s.classList.add('show');
+            setTimeout(() => s.classList.remove('show'), 2000);
+        }
+
+        async function saveData(silent = false) {
+            const date = document.getElementById('workDate').value;
+            const startHour = document.getElementById('startWorkHour').value;
+            const startMin = document.getElementById('startWorkMin').value;
+            const endHour = document.getElementById('endWorkHour').value;
+            const endMin = document.getElementById('endWorkMin').value;
+            const data = {
+                date, 
+                startWork: startHour && startMin ? `${startHour}:${startMin}` : '',
+                endWork: endHour && endMin ? `${endHour}:${endMin}` : '',
+                mainTask: document.getElementById('mainTask').value,
+                subTask: document.getElementById('subTask').value,
+                timeSlots: {},
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            document.querySelectorAll('.content-textarea[data-time]').forEach(t => { data.timeSlots[t.dataset.time] = t.value; });
+            try {
+                await db.collection('worklogs').doc(date).set(data, { merge: true });
+                showSaveStatus('✓ 저장 완료');
+                if (!silent) alert('저장되었습니다! 💾');
+            } catch (e) {
+                showSaveStatus('❌ 저장 실패');
+                if (!silent) alert('저장 중 오류 발생');
+            }
+        }
+
+        async function loadData() {
+            const date = document.getElementById('workDate').value;
+            try {
+                const doc = await db.collection('worklogs').doc(date).get();
+                if (doc.exists) {
+                    const d = doc.data();
+                    if (d.startWork) { const [h,m] = d.startWork.split(':'); document.getElementById('startWorkHour').value = h; document.getElementById('startWorkMin').value = m; }
+                    else { document.getElementById('startWorkHour').value = ''; document.getElementById('startWorkMin').value = ''; }
+                    if (d.endWork) { const [h,m] = d.endWork.split(':'); document.getElementById('endWorkHour').value = h; document.getElementById('endWorkMin').value = m; }
+                    else { document.getElementById('endWorkHour').value = ''; document.getElementById('endWorkMin').value = ''; }
+                    document.getElementById('mainTask').value = d.mainTask || '';
+                    document.getElementById('subTask').value = d.subTask || '';
+                    document.querySelectorAll('.content-textarea[data-time]').forEach(t => { t.value = d.timeSlots?.[t.dataset.time] || ''; });
+                } else { clearFormFields(); }
+            } catch (e) { console.error(e); }
+            updateTodayProjectsList();
+        }
+
+        function clearFormFields() {
+            document.getElementById('startWorkHour').value = '';
+            document.getElementById('startWorkMin').value = '';
+            document.getElementById('endWorkHour').value = '';
+            document.getElementById('endWorkMin').value = '';
+            document.getElementById('mainTask').value = '';
+            document.getElementById('subTask').value = '';
+            document.querySelectorAll('.content-textarea[data-time]').forEach(t => { t.value = ''; });
+        }
+
+        async function saveProjects() {
+            try { await db.collection('settings').doc('projects').set({ list: projects, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }); }
+            catch (e) { console.error(e); }
+        }
+
+        async function loadProjects() {
+            try {
+                const doc = await db.collection('settings').doc('projects').get();
+                if (doc.exists) projects = doc.data().list || [];
+            } catch (e) { console.error(e); }
+            updateProjectsList();
+            updateTodayProjectsList();
+        }
+
+        async function addProject() {
+            const name = document.getElementById('projectName').value;
+            const start = document.getElementById('projectStart').value;
+            const end = document.getElementById('projectEnd').value;
+            const progress = document.getElementById('projectProgress').value;
+            const status = document.getElementById('projectStatus').value;
+            if (!name || !start || !end) { alert('프로젝트명, 시작일, 종료일을 모두 입력해주세요.'); return; }
+            projects.push({ id: Date.now(), name, start, end, initialProgress: parseInt(progress), status, dailyProgress: {} });
+            await saveProjects();
+            updateProjectsList();
+            updateTodayProjectsList();
+            document.getElementById('projectName').value = '';
+            document.getElementById('projectStart').value = '';
+            document.getElementById('projectEnd').value = '';
+            document.getElementById('projectProgress').value = '0';
+            document.getElementById('projectStatus').value = 'planning';
+            alert('프로젝트가 등록되었습니다! 📊');
+        }
+
+        async function deleteProject(id) {
+            if (!confirm('정말 삭제하시겠습니까?')) return;
+            projects = projects.filter(p => p.id !== id);
+            await saveProjects();
+            updateProjectsList();
+            updateTodayProjectsList();
+        }
+
+        function updateProjectsList() {
+            const today = document.getElementById('workDate').value;
+            const c = document.getElementById('projectsList');
+            if (projects.length === 0) { c.innerHTML = '<div class="no-projects">📭 등록된 프로젝트가 없습니다</div>'; return; }
+            c.innerHTML = projects.map(p => {
+                const prog = p.dailyProgress?.[today] || p.initialProgress;
+                const total = Math.ceil((new Date(p.end) - new Date(p.start)) / 86400000);
+                const passed = Math.ceil((new Date(today) - new Date(p.start)) / 86400000);
+                return `<div class="project-item"><div class="project-name">${p.name}</div><div class="project-progress"><div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div><div class="progress-text">${prog}%</div></div><div class="project-dates"><span>${p.start} ~ ${p.end}</span><span>${Math.max(0,Math.min(passed,total))}일/${total}일</span></div><div class="project-status status-${p.status}">${getStatusText(p.status)}</div></div>`;
+            }).join('');
+        }
+
+        function updateTodayProjectsList() {
+            const today = document.getElementById('workDate').value;
+            const c = document.getElementById('todayProjectsList');
+            const active = projects.filter(p => p.status !== 'complete' && today >= p.start && today <= p.end);
+            if (active.length === 0) { c.innerHTML = '<div class="no-projects">📭 오늘 진행할 프로젝트가 없습니다</div>'; return; }
+            c.innerHTML = active.map(p => {
+                const prog = p.dailyProgress?.[today] || p.initialProgress;
+                return `<div class="project-item" style="margin-bottom:15px"><div class="project-name">${p.name}</div><div class="project-progress"><div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div><div class="progress-text">${prog}%</div></div><div style="margin-top:10px;display:flex;align-items:center;gap:10px"><label style="font-size:12px">진행률:</label><input type="number" id="progress_${p.id}" min="0" max="100" value="${prog}" style="width:70px;padding:4px;border:1px solid #ddd;border-radius:4px"><span style="font-size:12px">%</span><select id="status_${p.id}" style="padding:4px;border:1px solid #ddd;border-radius:4px;font-size:12px"><option value="planning" ${p.status==='planning'?'selected':''}>계획중</option><option value="progress" ${p.status==='progress'?'selected':''}>진행중</option><option value="complete" ${p.status==='complete'?'selected':''}>완료</option><option value="hold" ${p.status==='hold'?'selected':''}>보류</option></select><button onclick="deleteProject(${p.id})" style="padding:4px 8px;background:#dc3545;color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer">삭제</button></div></div>`;
+            }).join('');
+        }
+
+        async function saveTodayProgress() {
+            const today = document.getElementById('workDate').value;
+            projects.forEach(p => {
+                const pi = document.getElementById(`progress_${p.id}`);
+                const si = document.getElementById(`status_${p.id}`);
+                if (pi && si) {
+                    if (!p.dailyProgress) p.dailyProgress = {};
+                    p.dailyProgress[today] = parseInt(pi.value);
+                    p.status = si.value;
+                    if (parseInt(pi.value) >= 100) p.status = 'complete';
+                }
+            });
+            await saveProjects();
+            updateProjectsList();
+            updateTodayProjectsList();
+            alert('프로젝트 진행률이 저장되었습니다! 📊');
+        }
+
+        function getStatusText(s) { return {planning:'계획중',progress:'진행중',complete:'완료',hold:'보류'}[s] || s; }
+
+        function exportToExcel() {
+            const date = document.getElementById('workDate').value;
+            const sh = document.getElementById('startWorkHour').value;
+            const sm = document.getElementById('startWorkMin').value;
+            const eh = document.getElementById('endWorkHour').value;
+            const em = document.getElementById('endWorkMin').value;
+            let csv = '날짜,구분,내용\n';
+            if (sh && sm) csv += `"${date}","출근","${sh}:${sm}"\n`;
+            if (eh && em) csv += `"${date}","퇴근","${eh}:${em}"\n`;
+            csv += `"${date}","주업무","${document.getElementById('mainTask').value.replace(/"/g,'""')}"\n`;
+            csv += `"${date}","부업무","${document.getElementById('subTask').value.replace(/"/g,'""')}"\n`;
+            document.querySelectorAll('.content-textarea[data-time]').forEach(t => {
+                if (t.value.trim()) csv += `"${date}","${t.dataset.time==='overtime'?'야근':t.dataset.time+':00'}","${t.value.replace(/"/g,'""')}"\n`;
+            });
+            const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `업무일지_${date}.csv`;
+            link.click();
+            alert('엑셀 다운로드 완료! 📊');
+        }
+
+        function clearForm() { if (confirm('정말 초기화하시겠습니까?')) clearFormFields(); }
+    </script>
 </body>
 </html>
